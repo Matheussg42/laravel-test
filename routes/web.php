@@ -10,8 +10,7 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::group(['prefix' => 'api'], function () {
+Route::group(['prefix' => 'api','middleware' => ['jwt.auth']], function () {
     Route::group(['prefix' => 'v1'], function () {
         Route::apiResources([
             'produtos'          => 'ProdutoController',
@@ -22,10 +21,15 @@ Route::group(['prefix' => 'api'], function () {
         Route::post('estoques', 'EstoqueController@store')->name('estoques.store');
         Route::put('estoques/{id}', 'EstoqueController@update')->name('estoques.update');
         Route::get('estoques/{id}', 'EstoqueController@show')->name('estoques.show');
+        Route::get('estoques/produtos/{id}', 'EstoqueController@findByProduto')->name('estoques.findByProduto');
+        Route::get('estoques/loja/{id}', 'EstoqueController@findByLoja')->name('estoques.findByLoja');
         Route::delete('estoques/{id}', 'EstoqueController@destroy')->name('estoques.destroy');
     });
 });
 
-Route::get('/', function () {
-    return view('welcome');
+Route::group(['prefix' => 'auth', 'middleware' => 'jwt.auth'], function () {
+    Route::get('user', 'Auth\LoginController@user');
+    Route::post('logout', 'Auth\LoginController@logout');
 });
+
+Route::post('/login', 'Auth\LoginController@login');
