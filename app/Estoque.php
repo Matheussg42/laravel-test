@@ -9,7 +9,7 @@ class Estoque extends Model
 {
     use SoftDeletes;
     
-    protected $fillable = ['fk_id_produto', 'fk_id_loja', 'quantidade'];
+    protected $fillable = ['fk_id_produto', 'quantidade'];
 
     /**
      * The attributes that should be mutated to dates.
@@ -19,16 +19,9 @@ class Estoque extends Model
     protected $dates = ['deleted_at'];
 
     /**
-     * Seta que o estoque pertence ao Produto
-     */
-    public function produto(){
-        return $this->belongsTo('App\Produto');
-    }
-
-    /**
      * Seta que o estoque pertence a loja
      */
     public function loja(){
-        return $this->belongsTo('App\Loja');
+        return $this->belongsTo('App\Loja', 'fk_id_loja');
     }
 }

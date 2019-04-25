@@ -7,6 +7,8 @@ use Illuminate\Http\Resources\Json\Resource;
 use App\Services\ResponseService;
 
 use App\Repositories\Estoque\EstoqueRepository;
+use App\Repositories\Produto\ProdutoRepository;
+use App\Repositories\Loja\LojaRepository;
 
 class EstoqueResource extends Resource
 {
@@ -37,11 +39,18 @@ class EstoqueResource extends Resource
      */
     public function toArray($request)
     {
+        $ProdutoRepository = new ProdutoRepository();
+        $LojaRepository = new LojaRepository();
+
+        $produto = $ProdutoRepository->find($this->fk_id_produto);
+        $loja = $LojaRepository->find($this->fk_id_loja);
 
         return [
                 'id'               => $this->id,
                 'produto_id'       => $this->fk_id_produto,
+                'produto_nome'     => $produto->nome,
                 'loja_id'          => $this->fk_id_loja,
+                'loja_nome'        => $loja->nome,
                 'quantidade'       => $this->quantidade,
                 'createdAt'        => $this->created_at,
                 'updatedAt'        => $this->updated_at

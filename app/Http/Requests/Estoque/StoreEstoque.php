@@ -18,7 +18,6 @@ class StoreEstoque extends FormRequest
     {
         return [
             'fk_id_produto'     => 'required|integer',
-            'fk_id_loja'        => 'required|integer',
             'quantidade'        => 'required|integer'
         ];
     }

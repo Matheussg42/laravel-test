@@ -18,11 +18,16 @@ class Loja extends Model
      */
     protected $dates = ['deleted_at'];
 
+    public function users()
+    {
+        return $this->hasMany('App\User', 'loja_id');
+    }
+
     /**
      * Seta que a loja tem estoque
      */
     public function estoque()
     {
-        return $this->hasMany('App\Estoque');
+        return $this->hasMany('App\Estoque', 'fk_id_loja');
     }
 }

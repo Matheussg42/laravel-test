@@ -49,6 +49,7 @@ class EstoqueController extends Controller
         try{        
             $data = $this->estoque->create($request->all());
         }catch(\Throwable|\Exception $e){
+            dd($e);
             return ResponseService::exception('estoques.store',null,$e);
         }
         return new EstoqueResource($data,array('type' => 'store','route' => 'estoques.store'));
@@ -68,6 +69,38 @@ class EstoqueController extends Controller
             return ResponseService::exception('estoques.show',$id,$e);
         }
         return new EstoqueResource($data,array('type' => 'show','route' => 'estoques.show'));
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Estoque  $estoque
+     * @return \Illuminate\Http\Response
+     */
+    public function findByLoja($id)
+    {
+        try{
+            $data = $this->estoque->findBy('fk_id_loja', $id);
+        }catch(\Throwable|\Exception $e){
+            return ResponseService::exception('estoques.show',$id,$e);
+        }
+        return new EstoqueResourceCollection($data,array('type' => 'show','route' => 'estoques.show'));
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Estoque  $estoque
+     * @return \Illuminate\Http\Response
+     */
+    public function findByProduto($id)
+    {
+        try{
+            $data = $this->estoque->findBy('fk_id_produto', $id);
+        }catch(\Throwable|\Exception $e){
+            return ResponseService::exception('estoques.show',$id,$e);
+        }
+        return new EstoqueResourceCollection($data,array('type' => 'show','route' => 'estoques.show'));
     }
 
     /**

@@ -42,6 +42,22 @@ class EstoqueRepository
     }
 
     /**
+     * Busca por qualquer coluna
+     * 
+     * @param  column
+     * @param  value
+     * @return estoque
+     */
+    public function findBy($column,$value){ 
+        $estoque = Estoque::where($column,$value)->get();
+        if($estoque){
+            return $estoque;
+        }else{
+            throw new \Exception('Nada Encontrado',-404);
+        }
+    }
+
+    /**
      * Atualiza Estoque
      * 
      * @param  id
