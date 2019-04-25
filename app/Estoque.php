@@ -9,7 +9,7 @@ class Estoque extends Model
 {
     use SoftDeletes;
     
-    protected $fillable = ['fk_id_produto', 'quantidade'];
+    protected $fillable = ['fk_id_produto','fk_id_loja', 'quantidade'];
 
     /**
      * The attributes that should be mutated to dates.

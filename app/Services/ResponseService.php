@@ -67,14 +67,6 @@ Class ResponseService{
                 ],404);
                 break;
             default:
-                if (app()->bound('sentry')) {
-                    $sentry = app('sentry');
-                    $user = auth()->user();
-                    if($user){
-                        $sentry->user_context(['id' => $user->id,'name' => $user->name]);
-                    }
-                    $sentry->captureException($e);
-                }
                 return response()->json([
                     'status' => false,
                     'statusCode' => 500,

@@ -10,7 +10,7 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::group(['prefix' => 'api','middleware' => ['jwt.auth']], function () {
+Route::group(['prefix' => 'api'], function () {
     Route::group(['prefix' => 'v1'], function () {
         Route::apiResources([
             'produtos'          => 'ProdutoController',
@@ -26,10 +26,3 @@ Route::group(['prefix' => 'api','middleware' => ['jwt.auth']], function () {
         Route::delete('estoques/{id}', 'EstoqueController@destroy')->name('estoques.destroy');
     });
 });
-
-Route::group(['prefix' => 'auth', 'middleware' => 'jwt.auth'], function () {
-    Route::get('user', 'Auth\LoginController@user');
-    Route::post('logout', 'Auth\LoginController@logout');
-});
-
-Route::post('/login', 'Auth\LoginController@login');

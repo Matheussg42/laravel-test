@@ -21,7 +21,6 @@ class DatabaseSeeder extends Seeder
         $user = DB::table('users')->insertGetId([
             'name'      => 'Usuário de Seed',
             'email'     => 'teste@teste.com',
-            'loja_id'   => $loja,
             'password'  => '$2y$10$xMD9DsNkvTE6i8KdG8quge/Qk3K2EfMZQIQYcaa.LyFS8pp2tNHfq',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now()

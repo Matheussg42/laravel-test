@@ -38,11 +38,6 @@ class User extends Authenticatable implements JWTSubject
         'email_verified_at' => 'datetime',
     ];
 
-    public function loja()
-    {
-        return $this->belongsTo('App\Loja', 'loja_id');
-    }
-
     public function getJWTIdentifier() {
         return $this->getKey();
     }

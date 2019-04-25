@@ -49,7 +49,6 @@ class EstoqueController extends Controller
         try{        
             $data = $this->estoque->create($request->all());
         }catch(\Throwable|\Exception $e){
-            dd($e);
             return ResponseService::exception('estoques.store',null,$e);
         }
         return new EstoqueResource($data,array('type' => 'store','route' => 'estoques.store'));
