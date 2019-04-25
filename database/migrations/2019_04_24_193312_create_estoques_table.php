@@ -21,6 +21,7 @@ class CreateEstoquesTable extends Migration
             $table->foreign('fk_id_loja')->references('id')->on('lojas')->onDelete('cascade');
             $table->integer('quantidade');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

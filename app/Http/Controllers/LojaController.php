@@ -3,10 +3,31 @@
 namespace App\Http\Controllers;
 
 use App\Loja;
+
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Routing\Controller;
+//Loja Request
+use App\Http\Requests\Loja\StoreLoja;
+use App\Http\Requests\Loja\UpdateLoja;
+//Loja Resource
+use App\Transformers\Loja\LojaResource;
+use App\Transformers\Loja\LojaResourceCollection;
+//Loja Repository
+use App\Repositories\Loja\LojaRepository;
+
+use App\Services\ResponseService;
 
 class LojaController extends Controller
 {
+
+    private $loja;
+
+    public function __construct(LojaRepository $loja)
+    {
+        $this->loja = $loja;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -14,17 +35,7 @@ class LojaController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return new LojaResourceCollection($this->loja->all());
     }
 
     /**
@@ -33,9 +44,14 @@ class LojaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreLoja $request)
     {
-        //
+        try{        
+            $data = $this->loja->create($request->all());
+        }catch(\Throwable|\Exception $e){
+            return ResponseService::exception('lojas.store',null,$e);
+        }
+        return new LojaResource($data,array('type' => 'store','route' => 'lojas.store'));
     }
 
     /**
@@ -44,20 +60,14 @@ class LojaController extends Controller
      * @param  \App\Loja  $loja
      * @return \Illuminate\Http\Response
      */
-    public function show(Loja $loja)
+    public function show($id)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Loja  $loja
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Loja $loja)
-    {
-        //
+        try{
+            $data = $this->loja->find($id);
+        }catch(\Throwable|\Exception $e){
+            return ResponseService::exception('lojas.show',$id,$e);
+        }
+        return new LojaResource($data,array('type' => 'show','route' => 'lojas.show'));
     }
 
     /**
@@ -67,9 +77,14 @@ class LojaController extends Controller
      * @param  \App\Loja  $loja
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Loja $loja)
+    public function update($id, UpdateLoja $request)
     {
-        //
+        try{
+            $data = $this->loja->update($id,$request->all());
+        }catch(\Throwable|\Exception $e){
+            return ResponseService::exception('lojas.update',$id,$e);
+        }
+        return new LojaResource($data,array('type' => 'update','route' => 'lojas.update'));   
     }
 
     /**
@@ -78,8 +93,13 @@ class LojaController extends Controller
      * @param  \App\Loja  $loja
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Loja $loja)
+    public function destroy($id)
     {
-        //
+        try{
+            $data = $this->loja->destroy($id);
+        }catch(\Throwable|\Exception $e){
+            return ResponseService::exception('lojas.destroy',$id,$e);
+        }
+        return new LojaResource($data,array('type' => 'destroy','route' => 'lojas.destroy'));
     }
 }

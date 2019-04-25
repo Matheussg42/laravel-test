@@ -11,6 +11,21 @@
 |
 */
 
+Route::group(['prefix' => 'api'], function () {
+    Route::group(['prefix' => 'v1'], function () {
+        Route::apiResources([
+            'produtos'          => 'ProdutoController',
+            'lojas'             => 'LojaController'
+        ]);
+
+        Route::get('estoques', 'EstoqueController@index')->name('estoques.index');
+        Route::post('estoques', 'EstoqueController@store')->name('estoques.store');
+        Route::put('estoques/{id}', 'EstoqueController@update')->name('estoques.update');
+        Route::get('estoques/{id}', 'EstoqueController@show')->name('estoques.show');
+        Route::delete('estoques/{id}', 'EstoqueController@destroy')->name('estoques.destroy');
+    });
+});
+
 Route::get('/', function () {
     return view('welcome');
 });

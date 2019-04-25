@@ -3,10 +3,31 @@
 namespace App\Http\Controllers;
 
 use App\Produto;
+
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Routing\Controller;
+//Produto Request
+use App\Http\Requests\Produto\StoreProduto;
+use App\Http\Requests\Produto\UpdateProduto;
+//Produto Resource
+use App\Transformers\Produto\ProdutoResource;
+use App\Transformers\Produto\ProdutoResourceCollection;
+//Produto Repository
+use App\Repositories\Produto\ProdutoRepository;
+
+use App\Services\ResponseService;
 
 class ProdutoController extends Controller
 {
+
+    private $produto;
+
+    public function __construct(ProdutoRepository $produto)
+    {
+        $this->produto = $produto;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -14,17 +35,7 @@ class ProdutoController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return new ProdutoResourceCollection($this->produto->all());
     }
 
     /**
@@ -33,9 +44,14 @@ class ProdutoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreProduto $request)
     {
-        //
+        try{        
+            $data = $this->produto->create($request->all());
+        }catch(\Throwable|\Exception $e){
+            return ResponseService::exception('produtos.store',null,$e);
+        }
+        return new ProdutoResource($data,array('type' => 'store','route' => 'produtos.store'));
     }
 
     /**
@@ -44,20 +60,14 @@ class ProdutoController extends Controller
      * @param  \App\Produto  $produto
      * @return \Illuminate\Http\Response
      */
-    public function show(Produto $produto)
+    public function show($id)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Produto  $produto
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Produto $produto)
-    {
-        //
+        try{
+            $data = $this->produto->find($id);
+        }catch(\Throwable|\Exception $e){
+            return ResponseService::exception('produtos.show',$id,$e);
+        }
+        return new ProdutoResource($data,array('type' => 'show','route' => 'produtos.show'));
     }
 
     /**
@@ -67,9 +77,14 @@ class ProdutoController extends Controller
      * @param  \App\Produto  $produto
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Produto $produto)
+    public function update($id, UpdateProduto $request)
     {
-        //
+        try{
+            $data = $this->produto->update($id,$request->all());
+        }catch(\Throwable|\Exception $e){
+            return ResponseService::exception('produtos.update',$id,$e);
+        }
+        return new ProdutoResource($data,array('type' => 'update','route' => 'produtos.update'));   
     }
 
     /**
@@ -78,8 +93,13 @@ class ProdutoController extends Controller
      * @param  \App\Produto  $produto
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Produto $produto)
+    public function destroy($id)
     {
-        //
+        try{
+            $data = $this->produto->destroy($id);
+        }catch(\Throwable|\Exception $e){
+            return ResponseService::exception('produtos.destroy',$id,$e);
+        }
+        return new ProdutoResource($data,array('type' => 'destroy','route' => 'produtos.destroy'));
     }
 }

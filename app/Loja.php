@@ -19,7 +19,7 @@ class Loja extends Model
     protected $dates = ['deleted_at'];
 
     /**
-     * Get the budgets record associated with the vehicle.
+     * Seta que a loja tem estoque
      */
     public function estoque()
     {

@@ -19,7 +19,7 @@ class Produto extends Model
     protected $dates = ['deleted_at'];
 
     /**
-     * Get the budgets record associated with the vehicle.
+     * Seta que o produto tem estoque
      */
     public function estoque()
     {

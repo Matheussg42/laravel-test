@@ -3,10 +3,31 @@
 namespace App\Http\Controllers;
 
 use App\Estoque;
+
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Routing\Controller;
+//Estoque Request
+use App\Http\Requests\Estoque\StoreEstoque;
+use App\Http\Requests\Estoque\UpdateEstoque;
+//Estoque Resource
+use App\Transformers\Estoque\EstoqueResource;
+use App\Transformers\Estoque\EstoqueResourceCollection;
+//Estoque Repository
+use App\Repositories\Estoque\EstoqueRepository;
+
+use App\Services\ResponseService;
 
 class EstoqueController extends Controller
 {
+
+    private $estoque;
+
+    public function __construct(EstoqueRepository $estoque)
+    {
+        $this->estoque = $estoque;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -14,17 +35,7 @@ class EstoqueController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return new EstoqueResourceCollection($this->estoque->all());
     }
 
     /**
@@ -33,9 +44,14 @@ class EstoqueController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreEstoque $request)
     {
-        //
+        try{        
+            $data = $this->estoque->create($request->all());
+        }catch(\Throwable|\Exception $e){
+            return ResponseService::exception('estoques.store',null,$e);
+        }
+        return new EstoqueResource($data,array('type' => 'store','route' => 'estoques.store'));
     }
 
     /**
@@ -44,20 +60,14 @@ class EstoqueController extends Controller
      * @param  \App\Estoque  $estoque
      * @return \Illuminate\Http\Response
      */
-    public function show(Estoque $estoque)
+    public function show($id)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Estoque  $estoque
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Estoque $estoque)
-    {
-        //
+        try{
+            $data = $this->estoque->find($id);
+        }catch(\Throwable|\Exception $e){
+            return ResponseService::exception('estoques.show',$id,$e);
+        }
+        return new EstoqueResource($data,array('type' => 'show','route' => 'estoques.show'));
     }
 
     /**
@@ -67,9 +77,14 @@ class EstoqueController extends Controller
      * @param  \App\Estoque  $estoque
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Estoque $estoque)
+    public function update($id, UpdateEstoque $request)
     {
-        //
+        try{
+            $data = $this->estoque->update($id,$request->all());
+        }catch(\Throwable|\Exception $e){
+            return ResponseService::exception('estoques.update',$id,$e);
+        }
+        return new EstoqueResource($data,array('type' => 'update','route' => 'estoques.update'));   
     }
 
     /**
@@ -78,8 +93,13 @@ class EstoqueController extends Controller
      * @param  \App\Estoque  $estoque
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Estoque $estoque)
+    public function destroy($id)
     {
-        //
+        try{
+            $data = $this->estoque->destroy($id);
+        }catch(\Throwable|\Exception $e){
+            return ResponseService::exception('estoques.destroy',$id,$e);
+        }
+        return new EstoqueResource($data,array('type' => 'destroy','route' => 'estoques.destroy'));
     }
 }
