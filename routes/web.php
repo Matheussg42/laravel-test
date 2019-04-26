@@ -17,12 +17,12 @@ Route::group(['prefix' => 'api'], function () {
             'lojas'             => 'LojaController'
         ]);
 
-        Route::get('estoques', 'EstoqueController@index')->name('estoques.index');
-        Route::post('estoques', 'EstoqueController@store')->name('estoques.store');
-        Route::put('estoques/{id}', 'EstoqueController@update')->name('estoques.update');
-        Route::get('estoques/{id}', 'EstoqueController@show')->name('estoques.show');
-        Route::get('estoques/produtos/{id}', 'EstoqueController@findByProduto')->name('estoques.findByProduto');
-        Route::get('estoques/loja/{id}', 'EstoqueController@findByLoja')->name('estoques.findByLoja');
-        Route::delete('estoques/{id}', 'EstoqueController@destroy')->name('estoques.destroy');
+        Route::get('/estoques', 'EstoqueController@index')->name('estoques.index');
+        Route::post('/estoques', 'EstoqueController@store')->name('estoques.store');
+        Route::put('/estoques/{id}', 'EstoqueController@update')->name('estoques.update');
+        Route::get('/estoques/{id}', 'EstoqueController@show')->name('estoques.show');
+        Route::get('/estoques/produtos/{id}', 'EstoqueController@findByProduto')->name('estoques.findByProduto');
+        Route::get('/estoques/loja/{id}', 'EstoqueController@findByLoja')->name('estoques.findByLoja');
+        Route::delete('/estoques/{id}', 'EstoqueController@destroy')->name('estoques.destroy');
     });
 });
