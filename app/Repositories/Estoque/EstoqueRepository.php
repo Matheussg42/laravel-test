@@ -25,9 +25,9 @@ class EstoqueRepository
     public function create($fields){
         $find = Estoque::where('fk_id_produto', $fields['fk_id_produto'])->where('fk_id_loja', $fields['fk_id_loja'])->count();
         if($find >= 1){
-            return Estoque::create($fields);
-        }else{
             throw new \Exception('Este produto já possui um estoque nesta loja',-403);
+        }else{
+            return Estoque::create($fields);
         }
     }
 
