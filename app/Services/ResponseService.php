@@ -70,7 +70,7 @@ Class ResponseService{
                 return response()->json([
                     'status' => false,
                     'statusCode' => 500,
-                    'error'  => 'Problema ao realizar a operação, Tente novamente ou entre em contato com a oficina conectada',
+                    'error'  => 'Problema ao realizar a operação.',
                     'url'    => $id != null ? route($route,$id) : route($route)
                 ],500);
                 break;
